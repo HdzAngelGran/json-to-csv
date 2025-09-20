@@ -1,6 +1,7 @@
 package org.arkn37;
 
 import com.google.gson.JsonObject;
+import org.arkn37.service.CsvHandler;
 import org.arkn37.service.JsonHandler;
 
 import java.util.List;
@@ -25,6 +26,13 @@ public class Main {
         );
 
     }
+
+    public static void createCsvMenu() {
+        System.out.println("--------------------------------");
+        System.out.print("Enter JSON object (single line): ");
+        String jsonInput = scanner.next();
+        System.out.println(CsvHandler.generateCsvFromObject(jsonInput));
+    }
  
     public static void main(String[] args) {
         System.out.println("-- Welcome to JSON to CSV convertor --");
@@ -33,6 +41,7 @@ public class Main {
             System.out.println("""
                     ------------ Menu ------------
                     1) Read Json File content.
+                    2) Create CSV file from Json Object.
                     9) Exit.""");
             System.out.print("Select an option: ");
 
@@ -44,6 +53,7 @@ public class Main {
             action = scanner.nextInt();
             switch (action) {
                 case 1 -> jsonFileReaderMenu();
+                case 2 -> createCsvMenu();
                 case 9 -> System.out.println("""
                         --------------------------------
                           Thanks for your visit

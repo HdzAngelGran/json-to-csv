@@ -1,0 +1,87 @@
+package org.arkn37.service;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
+import com.opencsv.CSVWriter;
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
+public class CsvHandler {
+
+    private CsvHandler() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static void createCsv(List<JsonObject> jsonObject) throws IOException {
+
+        Set<String> allKeys = new LinkedHashSet<>();
+        for (JsonElement element : jsonObject) {
+            JsonObject currentObject = element.getAsJsonObject();
+            allKeys.addAll(currentObject.keySet());
+        }
+
+        String[] headers = allKeys.toArray(new String[0]);
+
+        try (CSVWriter writer = new CSVWriter(new FileWriter("file.csv"))) {
+            writer.writeNext(headers);
+
+            for (JsonElement element : jsonObject) {
+                List<String> values = mapValuesByHeader(element, headers);
+                writer.writeNext(values.toArray(new String[0]));
+            }
+        }
+    }
+
+    private static List<String> mapValuesByHeader(JsonElement element, String[] headers) {
+        JsonObject currentObject = element.getAsJsonObject();
+        List<String> values = new ArrayList<>();
+        for (String header : headers) {
+            JsonElement valueElement = currentObject.get(header);
+
+            if (valueElement == null || valueElement.isJsonNull()) {
+                values.add("");
+            } else if (valueElement.isJsonArray()) {
+                JsonArray jsonArrayValue = valueElement.getAsJsonArray();
+                List<String> arrayValues = new ArrayList<>();
+                for (JsonElement arrayElement : jsonArrayValue) {
+                    arrayValues.add(arrayElement.getAsString());
+                }
+                values.add(String.join(", ", arrayValues));
+            } else if (valueElement.isJsonObject())
+                values.add(valueElement.getAsJsonObject().toString());
+            else values.add(valueElement.getAsString());
+        }
+        return values;
+    }
+
+    public static String generateCsvFromObject(String jsonString) {
+        if (jsonString.isEmpty()) return "JSON input cannot be empty.";
+
+        if (jsonString.charAt(0) == '{') jsonString = "[" + jsonString + "]";
+
+        try {
+            List<JsonObject> objectList = JsonHandler.toListObject(jsonString);
+
+            createCsv(objectList);
+
+            return "CSV file created successfully!";
+        } catch (JsonSyntaxException e) {
+            return "Invalid JSON format: " + e.getMessage();
+        } catch (IOException e) {
+            return "Error while writing CSV: " + e.getMessage();
+        }
+    }
+
+}
