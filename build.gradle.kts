@@ -16,6 +16,9 @@ dependencies {
 
     // Gson for JSON processing
     implementation("com.google.code.gson:gson:2.11.0")
+
+    // OpenCSV for CSV processing
+    implementation("com.opencsv:opencsv:5.9")
 }
 
 tasks.test {
