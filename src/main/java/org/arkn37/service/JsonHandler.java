@@ -33,6 +33,9 @@ public class JsonHandler {
         }
 
         String stringFile = stringBuilder.toString();
+
+        if (stringFile.isEmpty()) return "[{\"key\":\"value\"}]";
+        
         if (stringFile.charAt(0) == '{') stringFile = "[" + stringFile + "]";
 
         return stringFile;
