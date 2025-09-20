@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Optional;
-import java.util.Scanner;
 
 public class JsonHandler {
 
@@ -46,15 +45,11 @@ public class JsonHandler {
         return gson.fromJson(jsonString, listType);
     }
 
-    public static Optional<List<JsonObject>> getJsonObject() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Provide file path: ");
-        String filePath = scanner.nextLine();
+    public static Optional<List<JsonObject>> getJsonObject(String filePath) {
         if (filePath.isEmpty()) {
             System.out.println("File path cannot be empty. Try again.");
             return Optional.empty();
         }
-        scanner.close();
 
         try {
             String jsonString = readFile(filePath);

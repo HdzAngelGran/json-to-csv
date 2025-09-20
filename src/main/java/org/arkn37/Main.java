@@ -8,9 +8,25 @@ import java.util.Optional;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
 
+    public static final Scanner scanner = new Scanner(System.in);
+
+    public static void jsonFileReaderMenu() {
+        System.out.println("--------------------------------");
+        System.out.print("Provide file path: ");
+        String filePath = scanner.nextLine();
+
+        Optional<List<JsonObject>> jsonObject = JsonHandler.getJsonObject(filePath);
+        jsonObject.ifPresent(jsonObjects ->
+            System.out.printf("""
+                    JsonParse:
+                        %s
+                    """, jsonObjects)
+        );
+
+    }
+ 
+    public static void main(String[] args) {
         System.out.println("-- Welcome to JSON to CSV convertor --");
         int action;
         do {
@@ -27,16 +43,7 @@ public class Main {
 
             action = scanner.nextInt();
             switch (action) {
-                case 1 -> {
-                    System.out.println("--------------------------------");
-                    Optional<List<JsonObject>> jsonObject = JsonHandler.getJsonObject();
-                    jsonObject.ifPresent(jsonObjects ->
-                            System.out.printf("""
-                                    JsonParse:
-                                        %s
-                                    """, jsonObjects)
-                    );
-                }
+                case 1 -> jsonFileReaderMenu();
                 case 9 -> System.out.println("""
                         --------------------------------
                           Thanks for your visit
