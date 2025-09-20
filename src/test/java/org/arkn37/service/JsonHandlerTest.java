@@ -4,6 +4,8 @@ import com.google.gson.JsonObject;
 import org.junit.jupiter.api.*;
 import java.io.*;
 import java.lang.reflect.Method;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,6 +14,7 @@ class JsonHandlerTest {
 
     private static final String VALID_JSON_FILE = "test.json";
     private static final String INVALID_JSON_FILE = "invalid.txt";
+    private static final String EMPTY_JSON_FILE = "empty.json";
 
     @BeforeAll
     static void setup() throws IOException {
@@ -24,12 +27,18 @@ class JsonHandlerTest {
         try (FileWriter writer = new FileWriter(INVALID_JSON_FILE)) {
             writer.write("Not a JSON");
         }
+
+        // Create an empty file
+        try (FileWriter writer = new FileWriter(EMPTY_JSON_FILE)) {
+            writer.write("");
+        }
     }
 
     @AfterAll
     static void cleanup() {
         new File(VALID_JSON_FILE).delete();
         new File(INVALID_JSON_FILE).delete();
+        new File(EMPTY_JSON_FILE).delete();
     }
 
     @Test
@@ -51,6 +60,14 @@ class JsonHandlerTest {
     }
 
     @Test
+    void testGetJsonObject_emptyJsonFile() throws Exception {
+        Method method = JsonHandler.class.getDeclaredMethod("readFile", String.class);
+        method.setAccessible(true);
+        String result = (String) method.invoke(null, EMPTY_JSON_FILE);
+        assertEquals("[{\"key\":\"value\"}]", result, "Addition result is incorrect");
+    }
+
+    @Test
     void testToListObject_validJson() throws Exception {
         String json = "[{\"key\":\"value\"}]";
         Method method = JsonHandler.class.getDeclaredMethod("toListObject", String.class);
@@ -64,7 +81,7 @@ class JsonHandlerTest {
     void testGetJsonObject_validInput() {
         String input = VALID_JSON_FILE + "\n";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
-        Optional<List<JsonObject>> result = JsonHandler.getJsonObject();
+        Optional<List<JsonObject>> result = JsonHandler.getJsonObject(VALID_JSON_FILE);
         assertTrue(result.isPresent());
         assertEquals(1, result.get().size());
     }
@@ -73,7 +90,7 @@ class JsonHandlerTest {
     void testGetJsonObject_emptyInput() {
         String input = "\n";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
-        Optional<List<JsonObject>> result = JsonHandler.getJsonObject();
+        Optional<List<JsonObject>> result = JsonHandler.getJsonObject(input);
         assertTrue(result.isEmpty());
     }
 }
