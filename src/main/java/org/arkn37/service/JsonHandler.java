@@ -18,7 +18,7 @@ public class JsonHandler {
         throw new IllegalStateException("Utility class");
     }
 
-    private static String readFile(String filePath) throws IOException {
+    public static String readFile(String filePath) throws IOException {
 
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -38,7 +38,7 @@ public class JsonHandler {
         return stringFile;
     }
 
-    private static List<JsonObject> toListObject(String jsonString) throws JsonSyntaxException {
+    public static List<JsonObject> toListObject(String jsonString) throws JsonSyntaxException {
         Gson gson = new Gson();
         Type listType = new TypeToken<List<JsonObject>>() {
         }.getType();
