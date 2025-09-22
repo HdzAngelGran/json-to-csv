@@ -9,6 +9,16 @@ This project is a simple Java application that converts JSON files to CSV format
 - Menu-driven user interface
 - Modular code structure (Menu, CsvHandler, JsonHandler)
 
+## Dependencies
+
+This project uses the following dependencies:
+
+- **JUnit Jupiter & Platform**: Provides the framework for writing and running unit tests. Ensures code reliability and makes it easy to test individual components.
+- **Gson**: Handles JSON parsing and serialization. Used to read, process, and transform JSON data into Java objects and vice versa.
+- **OpenCSV**: Facilitates CSV file creation and parsing. Used to write Java objects to CSV format and read CSV files when needed.
+
+All dependencies are managed via Gradle and downloaded from Maven Central.
+
 ## Project Structure
 
 ```
