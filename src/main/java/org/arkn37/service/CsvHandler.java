@@ -19,6 +19,12 @@ public class CsvHandler {
         throw new IllegalStateException("Utility class");
     }
 
+    /**
+     * Create csv.
+     *
+     * @param jsonObject the json object
+     * @throws IOException the io exception
+     */
     public static void createCsv(List<JsonObject> jsonObject) throws IOException {
 
         Set<String> allKeys = new LinkedHashSet<>();
@@ -39,6 +45,13 @@ public class CsvHandler {
         }
     }
 
+    /**
+     * Create csv.
+     *
+     * @param element the json element
+     * @param headers the headers
+     * @return the list
+     */
     private static List<String> mapValuesByHeader(JsonElement element, String[] headers) {
         JsonObject currentObject = element.getAsJsonObject();
         List<String> values = new ArrayList<>();
@@ -61,6 +74,12 @@ public class CsvHandler {
         return values;
     }
 
+    /**
+     * Generate csv from object string.
+     *
+     * @param jsonString the json string
+     * @return the string
+     */
     public static String generateCsvFromObject(String jsonString) {
         if (jsonString.isEmpty()) return "JSON input cannot be empty.";
 

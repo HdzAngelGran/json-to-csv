@@ -18,6 +18,13 @@ public class JsonHandler {
         throw new IllegalStateException("Utility class");
     }
 
+    /**
+     * Read file to string.
+     *
+     * @param filePath the file path
+     * @return the string
+     * @throws IOException the io exception
+     */
     public static String readFile(String filePath) throws IOException {
 
         StringBuilder stringBuilder = new StringBuilder();
@@ -41,6 +48,13 @@ public class JsonHandler {
         return stringFile;
     }
 
+    /**
+     * From String to list object.
+     *
+     * @param jsonString the json string
+     * @return the list
+     * @throws JsonSyntaxException the json syntax exception
+     */
     public static List<JsonObject> toListObject(String jsonString) throws JsonSyntaxException {
         Gson gson = new Gson();
         Type listType = new TypeToken<List<JsonObject>>() {
@@ -48,6 +62,12 @@ public class JsonHandler {
         return gson.fromJson(jsonString, listType);
     }
 
+    /**
+     * Gets json object.
+     *
+     * @param filePath the file path
+     * @return the json object
+     */
     public static Optional<List<JsonObject>> getJsonObject(String filePath) {
         if (filePath.isEmpty()) {
             System.out.println("File path cannot be empty. Try again.");
