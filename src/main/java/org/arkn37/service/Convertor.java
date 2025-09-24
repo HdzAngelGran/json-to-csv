@@ -12,7 +12,15 @@ public class Convertor {
     private Convertor() {
         throw new IllegalStateException("Utility class");
     }
-    
+
+    /**
+     * Convert json to csv.
+     *
+     * @param filepath        the filepath
+     * @param destinationPath the destination path
+     * @param delimiter       the delimiter
+     * @return the string
+     */
     public static String jsonToCsv(String filepath, String destinationPath , char delimiter) {
         try {
             Optional<List<JsonObject>> jsonObjects = JsonHandler.getJsonObject(filepath);

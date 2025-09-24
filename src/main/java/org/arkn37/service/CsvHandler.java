@@ -45,6 +45,14 @@ public class CsvHandler {
         }
     }
 
+    /**
+     * Create csv.
+     *
+     * @param jsonObject      the json object
+     * @param destinationPath the destination path
+     * @param delimiter       the delimiter
+     * @throws IOException the io exception
+     */
     public static void createCsv(List<JsonObject> jsonObject, String destinationPath, char delimiter) throws IOException {
         
         if (!destinationPath.endsWith(".csv") && !destinationPath.endsWith(".CSV"))
