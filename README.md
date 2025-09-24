@@ -5,9 +5,10 @@ This project is a simple Java application that converts JSON files to CSV format
 ## Features
 
 - Read JSON files
-- Transform Json String to CSV format
+- Transform JSON String to CSV format
+- Convert entire JSON files to CSV with custom delimiter selection (comma, semicolon, tab, space)
 - Menu-driven user interface
-- Modular code structure (Menu, CsvHandler, JsonHandler)
+- Modular code structure (Menu, CsvHandler, JsonHandler, Convertor)
 
 ## Dependencies
 
@@ -54,7 +55,14 @@ src/
 
 ## Usage
 
-Follow the on-screen menu to select JSON files and convert them to CSV. Output files will be saved in the specified location.
+The application provides a menu with the following options:
+
+1. **Read JSON File Content**: Display the contents of a JSON file.
+2. **Create CSV from JSON Object**: Enter a single-line JSON object and convert it to CSV.
+3. **Convert JSON File to CSV File**: Convert an entire JSON file to CSV, with the ability to choose the delimiter (comma, semicolon, tab, space).
+4. **Exit**
+
+Output files will be saved in the specified location.
 
 ### Examples
 
@@ -69,7 +77,7 @@ Suppose your JSON file contains:
 ]
 ```
 
-1. Run the application (via IDE or CLI).
+1. Run the application (via IDE).
 2. When prompted, enter the path to your JSON file, e.g.:
    ```
    Enter the path to the JSON file:
@@ -96,9 +104,32 @@ Alice,30
 Bob,25
 ```
 
-#### Example 3: Error Handling
+### Example 3:Convert a JSON file to CSV with custom delimiter
 
-If you enter an invalid file path or malformed JSON, the application will display an error message and prompt you to try again.
+1. Run the application (via IDE).
+2. Select option 3 from the menu.
+3. Enter the path to your JSON file, e.g.:
+   ```
+   Provide file path: C:\Users\YourName\Documents\input.json
+   ```
+4. Enter the destination path and file name for the CSV output, e.g.:
+   ```
+   Provide destination path and file name (with .csv extension): C:\Users\YourName\Documents\output.csv
+   ```
+5. Select the delimiter:
+   ```
+   Select delimiter (any other key for default ','):
+   1) Comma (,)
+   2) Semicolon (;)
+   3) Tab (\t)
+   4) Space ( )
+   Option: 2
+   ```
+6. The application will process the file and save the CSV output with the chosen delimiter.
+
+#### Example 4: Error Handling
+
+If you enter an invalid file path, malformed JSON, or unsupported delimiter, the application will display an error message and prompt you to try again.
 
 ## Testing
 
