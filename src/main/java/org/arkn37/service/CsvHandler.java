@@ -45,6 +45,30 @@ public class CsvHandler {
         }
     }
 
+    public static void createCsv(List<JsonObject> jsonObject, String destinationPath, char delimiter) throws IOException {
+        
+        if (!destinationPath.endsWith(".csv") && !destinationPath.endsWith(".CSV"))
+            throw new IOException("Destination extension is not .csv o .CSV");
+
+        Set<String> allKeys = new LinkedHashSet<>();
+        for (JsonElement element : jsonObject) {
+            JsonObject currentObject = element.getAsJsonObject();
+            allKeys.addAll(currentObject.keySet());
+        }
+
+        String[] headers = allKeys.toArray(new String[0]);
+
+        try (CSVWriter writer = new CSVWriter(new FileWriter(destinationPath), delimiter, CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END)) {
+
+            writer.writeNext(headers);
+
+            for (JsonElement element : jsonObject) {
+                List<String> values = mapValuesByHeader(element, headers);
+                writer.writeNext(values.toArray(new String[0]));
+            }
+        }
+    }
+
     /**
      * Create csv.
      *

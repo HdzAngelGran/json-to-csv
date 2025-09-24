@@ -5,8 +5,12 @@ import java.util.Optional;
 import java.util.Scanner;
 
 import com.google.gson.JsonObject;
+import com.opencsv.CSVWriter;
 
 public class Menu {
+    static {
+        System.out.println("---------------------------------------");
+    }
     private final Scanner scanner = new Scanner(System.in);
 
     private void jsonFileReaderMenu() {
@@ -31,6 +35,41 @@ public class Menu {
         System.out.println(CsvHandler.generateCsvFromObject(jsonInput));
     }
 
+    private void convertJsonToCsvMenu() {
+        System.out.println("--------------------------------");
+        System.out.print("Provide file path: ");
+        String filePath = scanner.next();
+        System.out.print("Provide destination path and file name (with .csv extension): ");
+        String destinationPath = scanner.next();
+        System.out.print("""
+                Select delimiter (any other key for default ','):
+                1) Comma (,)
+                2) Semicolon (;)
+                3) Tab (\\t)
+                4) Space ( )
+                Option:\t""");
+        while(!scanner.hasNextInt()) {
+            System.out.print("Not a valid input. Try again: ");
+            scanner.next();
+        }
+        char delimiter = switch (scanner.nextInt()) {
+            case 2 -> ';';
+            case 3 -> '\t';
+            case 4 -> ' ';
+            default -> CSVWriter.DEFAULT_SEPARATOR;
+        };
+
+        String resultPath = Convertor.jsonToCsv(filePath, destinationPath, delimiter);
+        if (!resultPath.isEmpty())
+            System.out.printf("""
+                    ┌-------------------------┐
+                      CSV file created at: %s
+                    └-------------------------┘
+                    """, resultPath);
+        else
+            System.err.println("Failed to create CSV file.");
+    }
+
     public void initMenu() {
         System.out.println("-- Welcome to JSON to CSV convertor --");
         int action;
@@ -39,6 +78,7 @@ public class Menu {
                     ------------ Menu ------------
                     1) Read Json File content.
                     2) Create CSV file from Json Object.
+                    3) Convert from JSON file to CSV file.
                     9) Exit.""");
             System.out.print("Select an option: ");
 
@@ -51,6 +91,7 @@ public class Menu {
             switch (action) {
                 case 1 -> jsonFileReaderMenu();
                 case 2 -> createCsvMenu();
+                case 3 -> convertJsonToCsvMenu();
                 case 9 -> System.out.println("""
                         --------------------------------
                           Thanks for your visit
